@@ -35,7 +35,7 @@ app.get('/fruits/:id', (req, res) => {
 // create fruit
 app.post('/fruits', (req, res) => {
   const newfruit = {
-    id: Math.max(...DATA.map((o) => o.id)) + 1,
+    id: Math.max(...fruits.map((o) => o.id)) + 1,
     name: req.body.name
   }
 
@@ -45,6 +45,42 @@ app.post('/fruits', (req, res) => {
 
   fruits.push(newfruit);
   res.json(fruits)
+});
+
+app.put('/fruits/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = fruits.findIndex((o) => o.id === id);
+
+  if (index === -1) {
+    res.status(400).send('Unknown id');
+  } else {
+    fruits.splice(index, 1, { ...req.body, id });
+    res.send();
+  }
+});
+
+app.patch('/fruits/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = fruits.find((o) => o.id === id);
+
+  if (!index) {
+    res.status(400).send('Unknown id');
+  } else {
+    Object.assign(index, req.body);
+    res.send();
+  }
+});
+
+app.delete('/fruits/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = fruits.findIndex((o) => o.id === id);
+  
+  if (index === -1) {
+    res.status(400).send('Unknown id');
+  } else {
+    fruits.splice(index, 1);
+    res.send(204);
+  }
 });
 
 app.listen(PORT);
