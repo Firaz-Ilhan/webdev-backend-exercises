@@ -1,0 +1,44 @@
+:root {
+  --color-white: #fff;
+  --color-black: #222;
+  --color-primary: #e31134;
+  --color-secondary: #3e4847;
+  --color-light: #eee;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 30px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  text-align: center;
+}
+
+td, th {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid var(--color-light);
+  min-width: 200px;
+}
+
+th {
+  background: var(--color-light);
+}
+
+a {
+  color: var(--color-black);
+  font-weight: bold;
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+a:active {
+  background: var(--color-light);
+}
