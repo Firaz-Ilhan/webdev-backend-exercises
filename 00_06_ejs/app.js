@@ -27,7 +27,7 @@ app.route('/fruits/:id')
     try {
       const id = parseInt(req.params.id);
       const fruit = DATA.find((o) => o.id === id);
-      res.render('fruits', fruit)
+      res.render('fruit', fruit)
     } catch (err) {
       next(err)
     }
