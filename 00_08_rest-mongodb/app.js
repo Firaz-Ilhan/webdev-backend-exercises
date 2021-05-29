@@ -55,7 +55,7 @@ app.get('/fruits/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const obj = new ObjectID(id)
-    const fruit = await db.collection('fruits').findOne(obj)
+    const fruit = await db.collection('fruits').findOne(obj);
     if (fruit) {
       res.send(fruit);
     } else {
@@ -67,23 +67,33 @@ app.get('/fruits/:id', async (req, res, next) => {
 });
 
 app.put('/fruits/:id', async (req, res, next) => {
-  //todo
+  try {
+    const { id } = req.params;
+    const { name, color } = req.body;
+    const obj = new ObjectID(id);
+    const fruit = await db.collection('fruits').findOneAndUpdate({ _id: obj }, { $set: { name, color } })
+    if (fruit != null) {
+      res.send(`${id} replaced`)
+    }
+  } catch (err) {
+    next(err)
+  }
 });
 
 app.delete('/fruits/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const obj = new ObjectID(id)
-    const fruit = await db.collection('fruits').findOne(obj)
+    const obj = new ObjectID(id);
+    const fruit = await db.collection('fruits').findOne(obj);
     const result = await db.collection('fruits').deleteOne(fruit);
 
     if (result.deletedCount > 0) {
-      res.send(`${id} deleted`)
+      res.send(`${id} deleted`);
     } else {
-      res.status(400).send(`${id} not found`)
+      res.status(400).send(`${id} not found`);
     }
   } catch (err) {
-    next(err)
+    next(err);
   }
 });
 
@@ -92,7 +102,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).send(err.message);
+  res.status(500).send('Internal Server Error');
   console.error(err);
 });
 
