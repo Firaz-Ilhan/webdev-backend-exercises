@@ -38,14 +38,14 @@ app.get('/restaurants', async (req, res, next) => {
 
 app.get('/areas', async (req, res, next) => {
   try {
-    const { cuisine } = req.query;
+    const { cuisine, borough } = req.query;
     const areas = await db
       .collection('restaurants')
       .aggregate([
-        { $match: { cuisine } },
-        { $project: { zipcode: '$address.zipcode', avg_score: { $avg: '$grades.score' } } },
-        { $group: { _id: '$zipcode', count: { $sum: 1, }, avg_score: { $avg: '$avg_score' } } },
-        { $sort: { _id: 1 } }
+        { $match: { cuisine: cuisine, borough: borough } },
+        { $project: { name: '$name', zipcode: '$address.zipcode', avg_score: { $avg: '$grades.score' } } },
+        { $group: { _id: '$zipcode', avg_score: { $avg: '$avg_score' } } },
+        { $sort: { avg_score: 1 } }
       ])
       .toArray();
 
