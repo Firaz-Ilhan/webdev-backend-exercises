@@ -43,7 +43,7 @@ app.get('/areas', async (req, res, next) => {
       .collection('restaurants')
       .aggregate([
         { $match: { cuisine: cuisine, borough: borough } },
-        { $project: { name: '$name', zipcode: '$address.zipcode', avg_score: { $avg: '$grades.score' } } },
+        { $project: { zipcode: '$address.zipcode', avg_score: { $avg: '$grades.score' } } },
         { $group: { _id: '$zipcode', avg_score: { $avg: '$avg_score' } } },
         { $sort: { avg_score: 1 } }
       ])

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/marx-css/css/marx.min.css" />
+  <style>
+    body {
+      margin-left: 20px;
+      background-color: rgb(240, 240, 240);
+    }
+
+    #msg {
+      color: rgb(40, 200, 40);
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    let msg = '';
+
+    async function read() {
+      const borough = document.getElementById('borough').value;
+      const cuisine = document.getElementById('cuisine').value;
+
+      const query = new URLSearchParams({ borough, cuisine })
+
+      const url = 'http://localhost:3000/restaurants?' + query
+
+      const response = await fetch(url, { method: 'GET' })
+      const htmlTable = await response.text();
+
+      document.getElementById('hits').innerHTML = ''
+
+      document.getElementById('hits').innerHTML = htmlTable
+
+      msg = '';
+      showMessage();
+    }
+
+    function showMessage() {
+      document.getElementById('msg').textContent = msg;
+      msg = '';
+    }
+  </script>
+</head>
+
+<body>
+  <h1>restaurants</h1>
+  <table>
+    <tr>
+      <td>Küche:</td>
+      <td><input type="text" size="30" id="cuisine" value="German" /></td>
+    </tr>
+    <tr>
+      <td>Stadtteil:</td>
+      <td><input type="text" size="30" id="borough" value="Brooklyn" /></td>
+    </tr>
+    <tr>
+      <td><input type="button" value="suchen" onclick="read()" /></td>
+      <td>
+        <p id="msg"></p>
+      </td>
+    </tr>
+  </table>
+  <div id="hits"></div>
+</body>
+
+</html>

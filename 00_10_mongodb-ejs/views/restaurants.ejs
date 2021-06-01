@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <th align="left">Name</th>
+    <th align="left">Straße</th>
+    <th align="left">Nummer</th>
+    <th align="left">Küche</th>
+    <th align="left">Stadtteil</th>
+    <th align="left">Score</th>
+    <th align="left">Grade</th>
+  </tr>
+
+  <% for (const restaurants of data) { %>
+
+    <tr>
+      <td><%=restaurants.name%> </td>
+      <td><%=restaurants.street%> </td>
+      <td><%=restaurants.building%> </td>
+      <td><%=restaurants.cuisine%> </td>
+      <td><%=restaurants.borough%> </td>
+      <td><%=parseFloat(restaurants.avg_score).toFixed(2)%></td>
+      <td><%=restaurants.lastgrade%> </td>
+      <td><button onclick="">edit</button></td>
+    </tr>
+
+  <% } %> 
+</table>
