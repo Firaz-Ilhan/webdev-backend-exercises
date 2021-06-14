@@ -9,17 +9,17 @@
     <th align="left">Grade</th>
   </tr>
 
-  <% for (const restaurants of data) { %>
+  <% for (const restaurant of data) { %>
 
     <tr>
-      <td><%=restaurants.name%> </td>
-      <td><%=restaurants.street%> </td>
-      <td><%=restaurants.building%> </td>
-      <td><%=restaurants.cuisine%> </td>
-      <td><%=restaurants.borough%> </td>
-      <td><%=parseFloat(restaurants.avg_score).toFixed(2)%></td>
-      <td><%=restaurants.lastgrade%> </td>
-      <td><button onclick="">edit</button></td>
+      <td><%=restaurant.name%> </td>
+      <td><%=restaurant.street%> </td>
+      <td><%=restaurant.building%> </td>
+      <td><%=restaurant.cuisine%> </td>
+      <td><%=restaurant.borough%> </td>
+      <td><%=parseFloat(restaurant.avg_score).toFixed(2)%></td>
+      <td><%=restaurant.lastgrade%> </td>
+      <td><button onclick="edit('<%restaurant._id%>')">edit</button></td>
     </tr>
 
   <% } %> 

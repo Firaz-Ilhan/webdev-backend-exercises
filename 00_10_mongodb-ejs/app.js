@@ -21,11 +21,16 @@ MongoClient.connect(url, {
 
 app.get('/restaurants', async (req, res, next) => {
   try {
-    const { cuisine, borough } = req.query;
+    const { borough, cuisine } = req.query;
 
     const restaurants = await db.collection('restaurants')
       .aggregate([
-        { $match: { borough: { $regex: borough, $options: 'i' }, cuisine: { $regex: cuisine, $options: 'i' } } },
+        {
+          $match: {
+            borough: { $regex: borough, $options: 'i' },
+            cuisine: { $regex: cuisine, $options: 'i' },
+          }
+        },
         {
           $project: {
             _id: 1, name: 1, cuisine: 1, borough: 1, street: '$address.street',
@@ -35,15 +40,12 @@ app.get('/restaurants', async (req, res, next) => {
         { $sort: { avg_score: 1 } },
       ]).toArray()
 
-
     const result = restaurants.map(o => ({
       _id: o.id, name: o.name, cuisine: o.cuisine, borough: o.borough,
       street: o.street, avg_score: o.avg_score, lastgrade: o.grades[0]
     }))
 
     res.render('restaurants', { data: result })
-
-    //res.send(restaurants)
   } catch (err) {
     next(err);
   }
@@ -52,14 +54,13 @@ app.get('/restaurants', async (req, res, next) => {
 app.patch('restaurants/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { name, street, building, cuisine, borough } = req.body
     const objId = ObjectID(id)
 
     await db.collection()
       .updateOne(
         { _id: objId },
         {
-          $set: { name, cuisine, borough, '$address.street': street, '$address.building': building },
+          $set: req.body,
           $currentDate: { lastModified: true }
         },
       )
@@ -75,7 +76,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).send('Snternal server error');
+  res.status(500).send('Internal server error');
   console.error(err);
 });
 
